@@ -9,7 +9,7 @@ i = 1
 base = 'basemenor.csv'
 count = 0
 csv_modificado = open(base, "wb")
-writer = csv.writer(csv_modificado, delimiter=';')
+writer = csv.writer(csv_modificado, delimiter='\t')
 while(i<len(arq[0])):
 	if((int(arq[2][i])) != -1):
 		dados = []
