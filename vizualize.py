@@ -5,13 +5,13 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import re
 #arquivo de leitura
-arq = pd.read_csv('win2.csv', sep = '\t', header = None)
+arq = pd.read_csv('preprocessing.csv', sep = '\t', header = None)
 i = 0
 j = 0
-base = 'pagerank.csv'
+base = 'pagerank2.csv'
 csv_modificado = open(base, "wb")
 writer = csv.writer(csv_modificado, delimiter='\t')
-base2 = 'pagerank2.csv'
+base2 = 'pagerank3.csv'
 csv_modificado2 = open(base2, "wb")
 writer2 = csv.writer(csv_modificado2, delimiter='\t')
 #declaracao do grafo
