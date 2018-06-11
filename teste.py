@@ -16,13 +16,13 @@ cont = 10000
 #declaracao do grafo
 G = nx.DiGraph()
 #arquivo de saida
-base3 = 'win2.csv'
+base3 = 'preprocessing.csv'
 csv_modificado3 = open(base3, "wb")
 writer3 = csv.writer(csv_modificado3, delimiter='\t')
 base = 'pagerank.csv'
 csv_modificado = open(base, "wb")
 writer = csv.writer(csv_modificado, delimiter='\t')
-base2 = 'pagerank2.csv'
+base2 = 'pagerank1.csv'
 csv_modificado2 = open(base2, "wb")
 writer2 = csv.writer(csv_modificado2, delimiter='\t')
 #inicio do codigo
