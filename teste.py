@@ -5,14 +5,14 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import re
 #arquivo de leitura
-arq = pd.read_csv('teste.csv', sep = '\t', header = None)
+arq = pd.read_csv('baseteste.csv', sep = '\t', header = None)
 #indices
 i = 0
 k = 0
 indiceArq = 0
 j = 0
 y = 0
-cont = 1000
+cont = 10000
 #declaracao do grafo
 G = nx.DiGraph()
 #arquivo de saida
@@ -68,11 +68,32 @@ while (indiceArq<len(arq[0])):
 		i = i + 1
 		j = i+1	
 
+print "iniciar qt degree"
+degree = list(G.in_degree())
+while i < len(degree):
+	dados = list(degree[i])
+	writer2.writerow(dados)
+	i = i+1
+
+
+print "iniciar page rank"
+
+pr =  nx.pagerank(G)
+i = 0
+for i in pr:
+	dados = []
+	dados.append(i)
+	dados.append(pr[i])
+	writer.writerow(dados)
+
 print "grafo montado"
+count = 100
 tabelaSaida = list(G.edges(data='weight'))
 i = 0
 while(i < len(tabelaSaida)):
-
+	if i > count:
+		print i,len(tabelaSaida)
+		count = count + 100
 	tabelaSaida[i] = list(tabelaSaida[i])
 	nodoA = tabelaSaida[i][0]
 	nodoB = tabelaSaida[i][1]
