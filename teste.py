@@ -5,32 +5,26 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import re
 #arquivo de leitura
-arq = pd.read_csv('baseteste.csv', sep = '\t', header = None)
+arq = pd.read_csv('baseCommunity.csv', sep = '\t', header = None)
 #indices
 i = 0
 k = 0
 indiceArq = 0
 j = 0
 y = 0
-cont = 10000
+count = 10000
 #declaracao do grafo
 G = nx.DiGraph()
 #arquivo de saida
 base3 = 'preprocessing.csv'
 csv_modificado3 = open(base3, "wb")
 writer3 = csv.writer(csv_modificado3, delimiter='\t')
-base = 'pagerank.csv'
-csv_modificado = open(base, "wb")
-writer = csv.writer(csv_modificado, delimiter='\t')
-base2 = 'pagerank1.csv'
-csv_modificado2 = open(base2, "wb")
-writer2 = csv.writer(csv_modificado2, delimiter='\t')
 #inicio do codigo
 print "lida a base"
 while (indiceArq<len(arq[0])):
-	if(indiceArq>cont):
-		cont = cont + 1000
-		print "CHEGOU EM"+str(cont)
+	if(indiceArq>count):
+		print indiceArq
+		count = count + 100000
 	usuario = arq[0][indiceArq]
 	tabela1 = []
 	while(indiceArq<len(arq[0])):#esse while monta tabela
@@ -68,32 +62,16 @@ while (indiceArq<len(arq[0])):
 		i = i + 1
 		j = i+1	
 
-print "iniciar qt degree"
-degree = list(G.in_degree())
-while i < len(degree):
-	dados = list(degree[i])
-	writer2.writerow(dados)
-	i = i+1
-
-
-print "iniciar page rank"
-
-pr =  nx.pagerank(G)
-i = 0
-for i in pr:
-	dados = []
-	dados.append(i)
-	dados.append(pr[i])
-	writer.writerow(dados)
 
 print "grafo montado"
 count = 100
 tabelaSaida = list(G.edges(data='weight'))
+print len(tabelaSaida)
 i = 0
 while(i < len(tabelaSaida)):
 	if i > count:
 		print i,len(tabelaSaida)
-		count = count + 100
+		count = count + 1000
 	tabelaSaida[i] = list(tabelaSaida[i])
 	nodoA = tabelaSaida[i][0]
 	nodoB = tabelaSaida[i][1]
