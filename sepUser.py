@@ -9,7 +9,7 @@ i = 0
 #c = 1000
 tabelaFinal = []
 tabela = []
-while(i<len(arq[0]) and len(tabelaFinal) < 1000):
+while(i<len(arq[0])):
 	u0 = arq[0][i]
 	base = "users/user"+str(u0)+".csv"
 	csv_modificado = open(base, "wb")

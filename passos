@@ -1,0 +1,9 @@
+1º passo: carregar o gexf
+2º passo: cor na aresta
+3º passo: setar rótulos
+4º passo: distribuição/frunchman 
+5º passo: distribuição/ajustar rótulos
+6º passo: pausar quando "estabilizar"
+7º passo: não sobrepor
+8º passo: vizualização > setar rótulo de nó e de arestas
+9º passo: atualizar

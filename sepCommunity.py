@@ -3,56 +3,52 @@ import pandas as pd
 import csv
 import sys
 import os
+from igraph import *
 pasta = "users"
 caminhos = [os.path.join(pasta,nome) for nome in os.listdir(pasta)]
 arquivos = [ar for ar in caminhos if os.path.isfile(ar)]
 #definir user atual
-userAtual = "users/user11359.csv"
-arq = pd.read_csv(userAtual, sep = '\t', header = None)
-#leitura do user em uma tabela
-i = 0
-count = 0
-u0 = arq[0][i]
-tabelaFinal = []
-tabela = []
-print "first while"
-while(i<len(arq[0])):#esse while monta tabela
-	u1 = arq[1][i]
-	u2 = arq[2][i]
-	tabela.append([u1])
-	tabelaFinal.append([u0,u1,u2])
-	i = i+1
-i = 0
-print "big while"
-while(i<len(arquivos)):
-	tabelaAux = []
-	if userAtual != arquivos[i]:
-		arqAux = pd.read_csv(arquivos[i], sep = '\t', header = None)
-		j =0
-		u0 = arqAux[0][j]		
+G = Graph()
+k=0
+arqUsers = []
+tabela_de_nos = []
+while(k<len(arquivos)):
+	userAtual = arquivos[k]
+	arq = pd.read_csv(userAtual, sep = '\t', header = None)
+	#leitura do user em uma tabela
+	i = 0
+	count = 0
+	tabelaFinal = []
+	tabela = []
+	if(arq[0][0] not in tabela_de_nos):
+		G.add_vertices(arq[0][0])
+		tabela_de_nos.append(arq[0][i])
+	print "first while"
+	while(i<len(arq[0])):#esse while monta tabela
+		tabela.append([arq[1][i]])
+		#tabelaFinal.append([u0,u1,u2])
+		i = i+1
+	y = k + 1
+	print "big while"
+	while(y<len(arquivos)):
+		tabelaAux = []
+		arqAux = pd.read_csv(arquivos[y], sep = '\t', header = None)
+		j = 0
+		if(arqAux[0][0] not in tabela_de_nos):
+			G.add_vertices(arqAux[0][0])
+			tabela_de_nos.append(arqAux[0][0])
 		count = 0
 		while(j<len(arqAux[0])):#esse while monta tabela
-			u1 = arqAux[1][j]
-			u2 = arqAux[2][j]
-			tabelaAux.append([u0,u1,u2])
-			if u1 in tabela:
+			tabelaAux.append([arqAux[1][j]])
+			if arqAux[1][j] in tabela:
 				count = count +1
 			j = j+1
 		j = 0
-		if count > len(tabela)*2.0/4.0:
-			print u0
-			while j < len(tabelaAux):
-				tabelaFinal.append(tabelaAux[j])
-				j = j+1
-	i = i + 1
-i = 0
-j = 0
-
-base = 'baseCommunity.csv'
-
-csv_modificado = open(base, "wb")
-writer = csv.writer(csv_modificado, delimiter='\t')
-
-while(i<len(tabelaFinal)):
-	writer.writerow(tabelaFinal[i])
-	i = i+1
+		if count > len(tabelaAux)*2.0/4.0:
+			G.add_edge(arq[0][0], arqAux[0][0], weight = count)
+		y = y + 1
+	i = 0
+	j = 0
+	k = k + 1
+comms = G.community_multilevel()
+plot(comms, mark_groups = True)
