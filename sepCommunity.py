@@ -3,12 +3,16 @@ import pandas as pd
 import csv
 import sys
 import os
+from igraph import plot
 from igraph import *
 pasta = "users"
 caminhos = [os.path.join(pasta,nome) for nome in os.listdir(pasta)]
 arquivos = [ar for ar in caminhos if os.path.isfile(ar)]
 #definir user atual
-G = Graph()
+#G = Graph(directed=False)
+vertices = []
+edges = []
+weight = []
 k=0
 arqUsers = []
 tabela_de_nos = []
@@ -21,22 +25,21 @@ while(k<len(arquivos)):
 	tabelaFinal = []
 	tabela = []
 	if(arq[0][0] not in tabela_de_nos):
-		G.add_vertices(arq[0][0])
-		tabela_de_nos.append(arq[0][i])
-	print "first while"
+		vertices.append(arq[0][i])
+		#G.add_vertices(int(arq[0][0]))
+	print "first while" + str(k)
 	while(i<len(arq[0])):#esse while monta tabela
 		tabela.append([arq[1][i]])
 		#tabelaFinal.append([u0,u1,u2])
 		i = i+1
-	y = k + 1
-	print "big while"
-	while(y<len(arquivos)):
+	i = k + 1
+	#print "big while"
+	while(i<len(arquivos)):
 		tabelaAux = []
-		arqAux = pd.read_csv(arquivos[y], sep = '\t', header = None)
-		j = 0
+		arqAux = pd.read_csv(arquivos[i], sep = '\t', header = None)
+		j =0
 		if(arqAux[0][0] not in tabela_de_nos):
-			G.add_vertices(arqAux[0][0])
-			tabela_de_nos.append(arqAux[0][0])
+			vertices.append(arqAux[0][0])
 		count = 0
 		while(j<len(arqAux[0])):#esse while monta tabela
 			tabelaAux.append([arqAux[1][j]])
@@ -45,10 +48,18 @@ while(k<len(arquivos)):
 			j = j+1
 		j = 0
 		if count > len(tabelaAux)*2.0/4.0:
-			G.add_edge(arq[0][0], arqAux[0][0], weight = count)
-		y = y + 1
+			edges.append((k,i))
+			weight.append(count)
+			#G.add_edge(int(arq[0][0]),int(arqAux[0][0]),weight = count)
+		i = i + 1
 	i = 0
 	j = 0
 	k = k + 1
+print "community"
+G = Graph(vertex_attrs={"label": vertices}, edges=edges)
 comms = G.community_multilevel()
+print "plot"
+#N = len(tabela_de_nos)
+#visual_style["layout"] = G.layout_fruchterman_reingold(weights=G.es["weight"], maxiter=1000, area=N**3, repulserad=N**3
+# Plot the graph
 plot(comms, mark_groups = True)
