@@ -16,7 +16,7 @@ weight = []
 k=0
 arqUsers = []
 tabela_de_nos = []
-while(k<len(arquivos)):
+while(k<50):
 	userAtual = arquivos[k]
 	arq = pd.read_csv(userAtual, sep = '\t', header = None)
 	#leitura do user em uma tabela
@@ -34,7 +34,7 @@ while(k<len(arquivos)):
 		i = i+1
 	i = k + 1
 	#print "big while"
-	while(i<len(arquivos)):
+	while(i<50):
 		tabelaAux = []
 		arqAux = pd.read_csv(arquivos[i], sep = '\t', header = None)
 		j =0
@@ -47,7 +47,7 @@ while(k<len(arquivos)):
 				count = count +1
 			j = j+1
 		j = 0
-		if count > len(tabelaAux)*2.0/4.0:
+		if count > len(tabelaAux)*0.6:
 			edges.append((k,i))
 			weight.append(count)
 			#G.add_edge(int(arq[0][0]),int(arqAux[0][0]),weight = count)
@@ -57,9 +57,10 @@ while(k<len(arquivos)):
 	k = k + 1
 print "community"
 G = Graph(vertex_attrs={"label": vertices}, edges=edges)
-comms = G.community_multilevel()
+comms = G.community_leading_eigenvector(clusters=10)
+print comms
 print "plot"
 #N = len(tabela_de_nos)
 #visual_style["layout"] = G.layout_fruchterman_reingold(weights=G.es["weight"], maxiter=1000, area=N**3, repulserad=N**3
 # Plot the graph
-plot(comms, mark_groups = True)
+plot(comms, mark_groups = True,layout = "fr")
