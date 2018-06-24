@@ -22,6 +22,9 @@ while(k<qtd):
 	userAtual = arquivos[k]
 	arq = pd.read_csv(userAtual, sep = '\t', header = None)
 	#leitura do user em uma tabela
+	print userAtual
+	print "oi", arq[1][0]
+	print "oi2", arq[2][0]
 	i = 0
 	count = 0
 	tabelaFinal = []

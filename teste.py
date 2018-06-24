@@ -4,74 +4,109 @@ import csv
 import networkx as nx
 import matplotlib.pyplot as plt
 import re
-#arquivo de leitura
-arq = pd.read_csv('baseCommunity.csv', sep = '\t', header = None)
+import signal
+import time
+import os
+pasta = "users"
+caminhos = [os.path.join(pasta,nome) for nome in os.listdir(pasta)]
+arquivos = [ar for ar in caminhos if os.path.isfile(ar)]
+
+
+class SIGINT_handler():
+    def __init__(self):
+        self.SIGINT = False
+        self.status = []
+
+    def signal_handler(self, signal, frame):
+        self.SIGINT = True
+
+handler = SIGINT_handler()
+signal.signal(signal.SIGINT, handler.signal_handler)
+def calculaPeso(tabela1):
+	i = 0
+	j = 1
+	while(i<len(tabela1)):
+		while(j<len(tabela1)):
+			if(tabela1[2][i] < tabela1[2][j]):
+				new_value_weight = tabela1[2][j] - tabela1[2][i]
+				if(G.has_edge(tabela1[1][j],tabela1[1][i])):
+					G.add_weighted_edges_from([(tabela1[1][j],tabela1[1][i],(G[tabela1[1][j]][tabela1[1][i]]['weight']+new_value_weight))])
+				else:
+					G.add_weighted_edges_from([(tabela1[1][j],tabela1[1][i],(new_value_weight))])
+				j = j + 1
+			elif(tabela1[2][i] == tabela1[2][j]):
+				j = j + 1
+			else:
+				new_value_weight = tabela1[2][i] - tabela1[2][j]
+				if(G.has_edge(tabela1[1][i],tabela1[1][j])):
+					G.add_weighted_edges_from([(tabela1[1][i],tabela1[1][j],(G[tabela1[1][i]][tabela1[1][j]]['weight']+new_value_weight))])
+				else:
+					G.add_weighted_edges_from([(tabela1[1][i],tabela1[1][j],(new_value_weight))])
+				j = j + 1
+		i = i + 1
+		j = i+1
 #indices
 i = 0
-k = 0
-indiceArq = 0
+cont = 0
 j = 0
-y = 0
-count = 10000
 #declaracao do grafo
 G = nx.DiGraph()
 #arquivo de saida
 base3 = 'preprocessing.csv'
 csv_modificado3 = open(base3, "wb")
 writer3 = csv.writer(csv_modificado3, delimiter='\t')
+base = 'pagerank.csv'
+csv_modificado = open(base, "wb")
+writer = csv.writer(csv_modificado, delimiter='\t')
+base2 = 'pagerank1.csv'
+csv_modificado2 = open(base2, "wb")
+writer2 = csv.writer(csv_modificado2, delimiter='\t')
 #inicio do codigo
 print "lida a base"
-while (indiceArq<len(arq[0])):
-	if(indiceArq>count):
-		print indiceArq
-		count = count + 100000
-	usuario = arq[0][indiceArq]
-	tabela1 = []
-	while(indiceArq<len(arq[0])):#esse while monta tabela
-		if(arq[0][indiceArq] == usuario):
-			c1 = arq[1][indiceArq]
-			c2 = arq[2][indiceArq]
-			tabela1.append([c1,c2])
-			indiceArq = indiceArq + 1
-		else:
-			break
+for y in range(0,len(arquivos)):
+	userAtual = arquivos[y]
+	tabela1 = pd.read_csv(userAtual, sep = '\t', header = None)
+	if handler.SIGINT == True:
+		handler.status.append(userAtual)
+		print "montando a tabela do usuario", handler.status
+		handler.status = []
+		handler.SIGINT = False
 	while(j<len(tabela1)):#esse while cria os nós
-		if G.has_node(tabela1[j][0]):
-			G.add_node(tabela1[j][0])
+		if G.has_node(tabela1[1][j]):
+			cont = cont + 1
+		else:
+			G.add_node(tabela1[1][j])
 		j = j + 1
-	i = 0
-	j = 1
-	while(i<len(tabela1)):
-		while(j<len(tabela1)):
-			if(tabela1[i][1] < tabela1[j][1]):
-				new_value_weight = tabela1[j][1] - tabela1[i][1]
-				if(G.has_edge(tabela1[j][0],tabela1[i][0])):
-					G.add_weighted_edges_from([(tabela1[j][0],tabela1[i][0],(G[tabela1[j][0]][tabela1[i][0]]['weight']+new_value_weight))])
-				else:
-					G.add_weighted_edges_from([(tabela1[j][0],tabela1[i][0],(new_value_weight))])
-				j = j + 1
-			elif(tabela1[i][1] == tabela1[j][1]):
-				j = j + 1
-			else:
-				new_value_weight = tabela1[i][1] - tabela1[j][1]
-				if(G.has_edge(tabela1[i][0],tabela1[j][0])):
-					G.add_weighted_edges_from([(tabela1[i][0],tabela1[j][0],(G[tabela1[i][0]][tabela1[j][0]]['weight']+new_value_weight))])
-				else:
-					G.add_weighted_edges_from([(tabela1[i][0],tabela1[j][0],(new_value_weight))])
-				j = j + 1
-		i = i + 1
-		j = i+1	
+	calculaPeso(tabela1)	
 
+print "iniciar qt degree"
+degree = list(G.in_degree())
+while i < len(degree):
+	dados = list(degree[i])
+	writer2.writerow(dados)
+	i = i+1
+
+
+print "iniciar page rank"
+
+pr =  nx.pagerank(G)
+i = 0
+for i in pr:
+	dados = []
+	dados.append(i)
+	dados.append(pr[i])
+	writer.writerow(dados)
 
 print "grafo montado"
-count = 100
 tabelaSaida = list(G.edges(data='weight'))
-print len(tabelaSaida)
 i = 0
 while(i < len(tabelaSaida)):
-	if i > count:
-		print i,len(tabelaSaida)
-		count = count + 1000
+	if handler.SIGINT == True:
+		handler.status.append(i)
+		print "to aqui montando grafo", handler.status
+		print "e vai ate aqui", len(tabelaSaida)
+		handler.status = []
+		handler.SIGINT = False
 	tabelaSaida[i] = list(tabelaSaida[i])
 	nodoA = tabelaSaida[i][0]
 	nodoB = tabelaSaida[i][1]
