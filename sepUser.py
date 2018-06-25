@@ -11,7 +11,7 @@ tabelaFinal = []
 tabela = []
 while(i<len(arq[0])):
 	u0 = arq[0][i]
-	base = "users/"+str(u0)+".csv"
+	base = "users/user"+str(u0)+".csv"
 	csv_modificado = open(base, "wb")
 	writer = csv.writer(csv_modificado, delimiter='\t')
 	tabela = []

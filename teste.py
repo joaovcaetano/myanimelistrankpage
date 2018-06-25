@@ -27,21 +27,15 @@ def calculaPeso(tabela1):
 	j = 1
 	while(i<len(tabela1)):
 		while(j<len(tabela1)):
-			if(tabela1[2][i] < tabela1[2][j]):
-				new_value_weight = tabela1[2][j] - tabela1[2][i]
-				if(G.has_edge(tabela1[1][j],tabela1[1][i])):
-					G.add_weighted_edges_from([(tabela1[1][j],tabela1[1][i],(G[tabela1[1][j]][tabela1[1][i]]['weight']+new_value_weight))])
-				else:
-					G.add_weighted_edges_from([(tabela1[1][j],tabela1[1][i],(new_value_weight))])
+			new_value_weight = tabela1[2][j] - tabela1[2][i]
+			if(G.has_edge(tabela1[1][j],tabela1[1][i])):
+				G.add_weighted_edges_from([(tabela1[1][j],tabela1[1][i],(G[tabela1[1][j]][tabela1[1][i]]['weight']+new_value_weight))])
 				j = j + 1
-			elif(tabela1[2][i] == tabela1[2][j]):
+			elif(G.has_edge(tabela1[1][i],tabela1[1][j])):
+				G.add_weighted_edges_from([(tabela1[1][i],tabela1[1][j],(G[tabela1[1][i]][tabela1[1][j]]['weight']+new_value_weight))])
 				j = j + 1
 			else:
-				new_value_weight = tabela1[2][i] - tabela1[2][j]
-				if(G.has_edge(tabela1[1][i],tabela1[1][j])):
-					G.add_weighted_edges_from([(tabela1[1][i],tabela1[1][j],(G[tabela1[1][i]][tabela1[1][j]]['weight']+new_value_weight))])
-				else:
-					G.add_weighted_edges_from([(tabela1[1][i],tabela1[1][j],(new_value_weight))])
+				G.add_weighted_edges_from([(tabela1[1][i],tabela1[1][j],(new_value_weight))])
 				j = j + 1
 		i = i + 1
 		j = i+1
@@ -73,12 +67,25 @@ for y in range(0,len(arquivos)):
 		handler.SIGINT = False
 	while(j<len(tabela1)):#esse while cria os nós
 		if G.has_node(tabela1[1][j]):
-			cont = cont + 1
-		else:
 			G.add_node(tabela1[1][j])
 		j = j + 1
 	calculaPeso(tabela1)	
 
+
+print "Verifica arestas invertendo sinal"
+for edge in G.edges(data = 'weight'):
+	if(edge[2] < 0):
+		no1 = edge[0]
+		no2 = edge[1]
+		peso = abs(edge[2])
+		G.remove_edge(*edge[:2])
+		G.add_weighted_edges_from([(no2,no1,(peso))])
+
+for edge in G.edges(data = 'weight'):
+	print edge[2]
+
+
+'''
 print "iniciar qt degree"
 degree = list(G.in_degree())
 while i < len(degree):
@@ -141,12 +148,12 @@ while(i<len(tabelaSaida)):
 	dados.append(tabelaSaida[i][2])
 	writer3.writerow(dados)
 	i = i+1
-
-"""pos = pos=nx.fruchterman_reingold_layout(G)
+'''
+'''pos = pos=nx.fruchterman_reingold_layout(G)
 plt.axis('auto')
 nx.draw_networkx_nodes(G, pos,node_size=20)
 nx.draw_networkx_labels(G, pos,alpha=0.4)
 nx.draw_networkx_edges(G, pos, arrows=True)
 labels = nx.get_edge_attributes(G,'weight')
 nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
-plt.show()"""
+plt.show()'''
