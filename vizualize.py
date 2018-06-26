@@ -8,10 +8,10 @@ import re
 arq = pd.read_csv('preprocessing.csv', sep = '\t', header = None)
 i = 0
 j = 0
-base = 'pagerank2.csv'
+base = 'pagerank.csv'
 csv_modificado = open(base, "wb")
 writer = csv.writer(csv_modificado, delimiter='\t')
-base2 = 'pagerank3.csv'
+base2 = 'indegree.csv'
 csv_modificado2 = open(base2, "wb")
 writer2 = csv.writer(csv_modificado2, delimiter='\t')
 #declaracao do grafo
