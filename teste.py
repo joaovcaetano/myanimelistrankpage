@@ -51,7 +51,7 @@ csv_modificado3 = open(base3, "wb")
 writer3 = csv.writer(csv_modificado3, delimiter='\t')
 base = 'pagerank.csv'
 csv_modificado = open(base, "wb")
-writer = csv.writer(csv_modificado, delimiter='\t')
+writer = csv.writer2(csv_modificado, delimiter='\t')
 base2 = 'pagerank1.csv'
 csv_modificado2 = open(base2, "wb")
 writer2 = csv.writer(csv_modificado2, delimiter='\t')
@@ -85,14 +85,14 @@ for edge in G.edges(data = 'weight'):
 	print edge[2]
 
 
-'''
+
 print "iniciar qt degree"
 degree = list(G.in_degree())
 while i < len(degree):
 	dados = list(degree[i])
 	writer2.writerow(dados)
 	i = i+1
-
+	
 
 print "iniciar page rank"
 
@@ -104,7 +104,7 @@ for i in pr:
 	dados.append(pr[i])
 	writer.writerow(dados)
 
-print "grafo montado"
+"""print "grafo montado"
 tabelaSaida = list(G.edges(data='weight'))
 i = 0
 while(i < len(tabelaSaida)):
@@ -148,7 +148,7 @@ while(i<len(tabelaSaida)):
 	dados.append(tabelaSaida[i][2])
 	writer3.writerow(dados)
 	i = i+1
-'''
+
 '''pos = pos=nx.fruchterman_reingold_layout(G)
 plt.axis('auto')
 nx.draw_networkx_nodes(G, pos,node_size=20)
@@ -157,3 +157,4 @@ nx.draw_networkx_edges(G, pos, arrows=True)
 labels = nx.get_edge_attributes(G,'weight')
 nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
 plt.show()'''
+"""

@@ -14,8 +14,8 @@ arquivos = [ar for ar in caminhos if os.path.isfile(ar)]
 vertices = []
 edges = []
 weight = []
-qtd = 30
-threshold = 0.3
+qtd = 400
+threshold = 0.2
 k=0
 arqUsers = []
 while(k<qtd):
@@ -23,8 +23,6 @@ while(k<qtd):
 	arq = pd.read_csv(userAtual, sep = '\t', header = None)
 	#leitura do user em uma tabela
 	print userAtual
-	print "oi", arq[1][0]
-	print "oi2", arq[2][0]
 	i = 0
 	count = 0
 	tabelaFinal = []
@@ -32,7 +30,6 @@ while(k<qtd):
 	if(arq[0][0] not in vertices):
 		vertices.append(arq[0][i])
 		#G.add_vertices(int(arq[0][0]))
-	print "first while" + str(k)
 	while(i<len(arq[0])):#esse while monta tabela
 		tabela.append([arq[1][i]])
 		#tabelaFinal.append([u0,u1,u2])
@@ -76,7 +73,7 @@ while(i<len(listCommun)):
 	writer = csv.writer(csv_modificado, delimiter='\t')
 	j = 0
 	while(j<len(listCommun[i])):
-		arquivoSaida = pd.read_csv("users/"+str(vertices[listCommun[i][j]])+'.csv', sep = '\t', header = None)
+		arquivoSaida = pd.read_csv("users/user"+str(vertices[listCommun[i][j]])+'.csv', sep = '\t', header = None)
 		k = 0
 		while(k < len(arquivoSaida[0])):
 			dados = []
@@ -88,5 +85,5 @@ while(i<len(listCommun)):
 		j = j+1
 	i = i+1
 
-"""print plot
-plot(comms, mark_groups = True,layout = "fr")"""
+print plot
+plot(comms, mark_groups = True,layout = "fr")
