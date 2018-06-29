@@ -1,30 +1,19 @@
 #-*- coding: utf-8 -*-
 import pandas as pd
 import csv
-arq = pd.read_csv('basemenor.csv',sep= ';', header = None)
-i = 0
-usuarios = []
-j = 0
-contador = []
-while(i<len(arq[0])):
-	if(arq[0][i] not in  usuarios):
-		usuarios.append(arq[0][i])
-		contador.append(1)
-	else:
-		while(j<len(usuarios)):
-			if(arq[0][i] == usuarios[j]):
-				contador[j] = contador[j] + 1
-			#print 'j', j
-			j = j + 1
-	#print 'i', i
-
-	i = i+1
-
-k = 0
-csvm = open("contador.csv", "wb")
+arq = pd.read_csv('pagerank1.csv',sep= '\t', header = None)
+base = "normalizado.csv"
+csv_modificado = open(base, "wb")
 writer = csv.writer(csv_modificado, delimiter='\t')
-while(k<len(usuarios)):
-	dados = []
-	dados.append(int(usuarios[k]))
-	dados.append(int(contador[k]))
-	writer.writerow(dados)
+lista = []
+for i in range(0,len(arq[1])):
+	u0 = arq[0][i]
+	u2 = arq[1][i]
+	valor = float(arq[1][i])
+	divisao = valor / len(arq[1])
+	multiplica = divisao * 9.0
+	u1 = multiplica + 1
+	lista.append([u0,u2,u1])
+	writer.writerow(lista[i])
+			
+csv_modificado.close()

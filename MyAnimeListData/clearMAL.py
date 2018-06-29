@@ -9,7 +9,8 @@ writer = csv.writer(csv_modificado, delimiter='\t')
 i = 1
 j = 1
 while(i<len(arquivo[0])):
-	if int(arquivo[0][i]) < 10000:
-		writer.writerow((arquivo[5][i],arquivo[0][i]))
-		j = j+1
+	texto = str(arquivo[2][i])
+	texto = texto.split(", ")
+	if("Shounen" in texto):
+		writer.writerow((arquivo[0][i],arquivo[5][i]))
 	i = i+1

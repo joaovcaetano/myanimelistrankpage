@@ -4,7 +4,7 @@ import csv
 import sys
 
 
-arq = pd.read_csv('basemenor.csv', sep = ';', header = None)
+arq = pd.read_csv('basefinal.csv', sep = '\t', header = None)
 i = 0
 #c = 1000
 tabelaFinal = []
