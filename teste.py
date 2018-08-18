@@ -10,7 +10,7 @@ import os
 pasta = "users"
 caminhos = [os.path.join(pasta,nome) for nome in os.listdir(pasta)]
 arquivos = [ar for ar in caminhos if os.path.isfile(ar)]
-
+print 'turubom'
 
 class SIGINT_handler():
     def __init__(self):
@@ -55,6 +55,7 @@ writer = csv.writer(csv_modificado, delimiter='\t')
 base2 = 'pagerank1.csv'
 csv_modificado2 = open(base2, "wb")
 writer2 = csv.writer(csv_modificado2, delimiter='\t')
+contador = 0
 #inicio do codigo
 print "len users", len(arquivos)
 for y in range(0,len(arquivos)):
@@ -65,29 +66,45 @@ for y in range(0,len(arquivos)):
 		print "montando a tabela do usuario", handler.status
 		handler.status = []
 		handler.SIGINT = False
+	'''for k in range(0,len(tabela1)):
+		if(tabela1[1][k] == 4773):
+			contador = contador + 1
+			print 'alo', tabela1[1][k]''' #O for comentado é um contador de quantas pessoas viram yamato no takeru
 	while(j<len(tabela1)):#esse while cria os nós
 		if G.has_node(tabela1[1][j]):
 			G.add_node(tabela1[1][j])
 		j = j + 1
 	calculaPeso(tabela1)
 tabela1 = []
-
+lista_aux = []
+print "viram yamato", contador
 print "Verifica arestas invertendo sinal"
+print len(G.edges())
 for edge in G.edges(data = 'weight'):
 	if(edge[2] < 0):
 		no1 = edge[0]
 		no2 = edge[1]
 		peso = abs(edge[2])
+		'''peso_real = int(edge[2])
+		if((int(no1) == 4773) or (int(no2) == 4773)):
+			lista_aux.append([no1, no2, peso_real])'''
 		G.remove_edge(*edge[:2])
 		G.add_weighted_edges_from([(no2,no1,(peso))])
-
-print "iniciar qt degree"
+print "iniciar qt indegree"
+#csv_modificado4 = open("yamato_takeru.csv", "wb")
+#writer4 = csv.writer(csv_modificado4, delimiter='\t')
 degree = list(G.in_degree())
+outdegree = list(G.out_degree())
+
 while i < len(degree):
 	dados = list(degree[i])
-	writer2.writerow(dados)
+	dados2 = list(outdegree[i])
+	writer2.writerow((dados[0],dados[1], dados2[1]))
 	i = i+1
+'''for z in range(0,len(lista_aux)):
+	writer4.writerow((lista_aux[z][0], lista_aux[z][1], lista_aux[z][2]))'''
 csv_modificado2.close()
+#csv_modificado4.close()
 
 print "iniciar page rank"
 

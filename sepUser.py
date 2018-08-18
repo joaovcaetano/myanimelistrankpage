@@ -10,6 +10,7 @@ i = 0
 tabelaFinal = []
 tabela = []
 while(i<len(arq[0])):
+	print i
 	u0 = arq[0][i]
 	base = "users/user"+str(u0)+".csv"
 	csv_modificado = open(base, "wb")
@@ -17,6 +18,7 @@ while(i<len(arq[0])):
 	tabela = []
 	j =0
 	while(i<len(arq[0])):#esse while monta tabela
+		print i
 		if(arq[0][i] == u0):
 			u1 = arq[1][i]
 			u2 = arq[2][i]

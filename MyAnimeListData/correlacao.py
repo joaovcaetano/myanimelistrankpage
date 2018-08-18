@@ -1,8 +1,8 @@
 from scipy import stats
 import pandas as pd
 import csv
-arq1 = pd.read_csv('normalizado.csv',sep= '\t', header = None)
-arq2 = pd.read_csv('malsaida.csv', sep = '\t', header = None)
+arq1 = pd.read_csv('pagerank.csv',sep= '\t', header = None)
+arq2 = pd.read_csv('genero.csv', sep = '\t', header = None)
 lista_page = []
 lista_my_anime_data = []
 lista_anime = []
@@ -16,23 +16,23 @@ tabela = []
 #k = 0
 
 while (i< len(arq2[0]) and j<len(arq1[0])):
-	if (int(arq2[1][i]) < int(arq1[0][j])):
+	if (int(arq2[0][i]) < int(arq1[0][j])):
 		i = i + 1
-	elif (int(arq2[1][i]) > int(arq1[0][j])):
+	elif (int(arq2[0][i]) > int(arq1[0][j])):
 		j = j + 1
 	else:
 		u0 = arq1[0][j]
-		u1 = float(arq1[2][j])
-		u2 = float(arq2[0][i])
+		u1 = float(arq1[1][j])
+		u2 = float(arq2[1][i])
 		lista_anime.append(arq1[0][j])
-		lista_page.append(float(arq1[2][j]))
-		lista_my_anime_data.append(float(arq2[0][i]))
+		lista_page.append(float(arq1[1][j]))
+		lista_my_anime_data.append(float(arq2[1][i]))
 		#tabela.append([u0,u1,u2])
 		#writer.writerow(tabela[k])
 		#k = k + 1
 		j = j+1
 		i = i+1
-df = stats.spearmanr(lista_page, lista_my_anime_data, nan_policy = 'omit')
+df = stats.spearmanr(lista_page, lista_my_anime_data)#, nan_policy = 'omit')
 print df
 '''
 def correlation_matrix(df):
