@@ -1,7 +1,0 @@
-0º passo para pagerank: opcional rodar clearMal (na pasta MyAnimeList Data) para gerar a lista baseada no gênero (esse csv de gênero bota na pasta principal q é a entrada da baseparateste.py)
-1º passo para pagerank: rodar baseparateste.py
-2º passo para pagerank: rodar sepUser.py
-3º passo para pagerank: rodar teste.py
-Para Correlação: rodar clearMal.py para obter a nota do myanimelist e ordena o csv
-                 rodar contador.py para obter o pagerank normalizado e ordena o normalizado.csv
-                 rodar correlacao.py
