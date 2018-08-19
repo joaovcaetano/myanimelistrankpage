@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 import pandas as pd
 import csv
+import sys
 
 ##Codigo de temporada
 '''arquivo = pd.read_csv('anime.csv',delimiter=",",header=None)
@@ -23,15 +24,19 @@ while(i<len(anime)):
 	i = i+1
 '''
 ##Codigo de Gênero
-arquivo = pd.read_csv('anime.csv',delimiter=",",header=None)
-base = "genero.csv"
-csv_modificado = open(base, "wb")
-writer = csv.writer(csv_modificado, delimiter = '\t')
-anime = []
-k = 1
-for i in range(0, len(arquivo[0])):
-	texto = str(arquivo[2][i])
-	texto = texto.split(", ")
-	if "Shounen" in texto:
-		writer.writerow((arquivo[0][i],arquivo[5][i]))
-csv_modificado.close()
+genero = sys.argv[1]
+def geraGenero():
+	arquivo = pd.read_csv('anime.csv',delimiter=",",header=None)
+	base = "genero.csv"
+	csv_modificado = open(base, "wb")
+	writer = csv.writer(csv_modificado, delimiter = '\t')
+	anime = []
+	k = 1
+	for i in range(0, len(arquivo[0])):
+		texto = str(arquivo[2][i])
+		texto = texto.split(", ")
+		if genero in texto:
+			writer.writerow((arquivo[0][i],arquivo[5][i]))
+	csv_modificado.close()
+
+geraGenero()

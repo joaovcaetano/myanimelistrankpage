@@ -66,10 +66,6 @@ for y in range(0,len(arquivos)):
 		print "montando a tabela do usuario", handler.status
 		handler.status = []
 		handler.SIGINT = False
-	'''for k in range(0,len(tabela1)):
-		if(tabela1[1][k] == 4773):
-			contador = contador + 1
-			print 'alo', tabela1[1][k]''' #O for comentado é um contador de quantas pessoas viram yamato no takeru
 	while(j<len(tabela1)):#esse while cria os nós
 		if G.has_node(tabela1[1][j]):
 			G.add_node(tabela1[1][j])
@@ -115,52 +111,6 @@ for i in pr:
 	dados.append(i)
 	dados.append(pr[i])
 	writer.writerow(dados)
-'''
-print "grafo montado"
-tabelaSaida = list(G.edges(data='weight'))
-i = 0
-while(i < len(tabelaSaida)):
-	if handler.SIGINT == True:
-		handler.status.append(i)
-		print "to aqui montando grafo", handler.status
-		print "e vai ate aqui", len(tabelaSaida)
-		handler.status = []
-		handler.SIGINT = False
-	tabelaSaida[i] = list(tabelaSaida[i])
-	nodoA = tabelaSaida[i][0]
-	nodoB = tabelaSaida[i][1]
-	j = i
-	while(j < len(tabelaSaida) and (nodoA != tabelaSaida[j][1] or nodoB != tabelaSaida[j][0])):
-		j = j+1
-	if j<len(tabelaSaida):
-		tabelaSaida[j] = list(tabelaSaida[j])
-		if tabelaSaida[i][2] > tabelaSaida[j][2]:
-			tabelaSaida[i][2] = tabelaSaida[i][2] - tabelaSaida[j][2]
-		elif tabelaSaida[j][2] > tabelaSaida[i][2]:
-			tabelaSaida[i][1] = nodoA
-			tabelaSaida[i][0] = nodoB
-			tabelaSaida[i][2] = tabelaSaida[j][2] - tabelaSaida[i][2]
-		else:
-			tabelaSaida[i][2] = 0
-		del tabelaSaida[j]
-	tabelaSaida[i][1] = nodoA
-	tabelaSaida[i][0] = nodoB
-	i = i+1
-
-
-
-
-print "grafo limpo"
-#tratamento para sair em tabela
-i = 0
-while(i<len(tabelaSaida)):
-	dados = []
-	dados.append(tabelaSaida[i][0])
-	dados.append(tabelaSaida[i][1])
-	dados.append(tabelaSaida[i][2])
-	writer3.writerow(dados)
-	i = i+1
-'''
 '''pos = pos=nx.fruchterman_reingold_layout(G)
 plt.axis('auto')
 nx.draw_networkx_nodes(G, pos,node_size=20)
