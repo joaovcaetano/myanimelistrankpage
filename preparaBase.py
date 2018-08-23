@@ -68,4 +68,5 @@ def separaUsuario():
 
 geraGenero()
 geraTodosUsuarios()
+print "To separando usuários"
 separaUsuario()
