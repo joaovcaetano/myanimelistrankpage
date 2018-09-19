@@ -67,6 +67,7 @@ def separaUsuario():
 				break
 
 geraGenero()
+print "Gera Genero"
 geraTodosUsuarios()
 print "To separando usuários"
 separaUsuario()
